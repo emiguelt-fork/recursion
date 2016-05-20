@@ -103,10 +103,18 @@
     (cons a-seq (tails (rest a-seq)))))
 
 (defn inits [a-seq]
-  [:-])
+  (defn first-n [n seq-1]
+    (cond
+      (empty? seq-1) '()
+      (< n 1) '()
+      :else (cons (first seq-1) (first-n (- n 1) (rest seq-1)))))
+  (map (fn [i] (first-n i a-seq)) (range 0 (+ 1 (count a-seq)))))
 
 (defn rotations [a-seq]
-  [:-])
+  (if (empty? a-seq) '(())
+    (let [inits-1 (inits a-seq)
+          tails-1 (tails a-seq)]
+      (rest (map concat tails-1 inits-1)))))
 
 (defn my-frequencies-helper [freqs a-seq]
   [:-])
