@@ -117,13 +117,19 @@
       (rest (map concat tails-1 inits-1)))))
 
 (defn my-frequencies-helper [freqs a-seq]
-  [:-])
+  (if (empty? a-seq) 
+    freqs
+    (let [keyvalue (first a-seq)]
+      (if (contains? freqs keyvalue) 
+        (my-frequencies-helper (assoc freqs keyvalue (+ (get freqs keyvalue) 1)) (rest a-seq))
+        (my-frequencies-helper (assoc freqs keyvalue 1) (rest a-seq))))))
+
 
 (defn my-frequencies [a-seq]
-  [:-])
+  (my-frequencies-helper {} a-seq))
 
 (defn un-frequencies [a-map]
-  [:-])
+  (apply concat (map (fn [entryk] (repeat (get a-map entryk) entryk)) (keys a-map))))
 
 (defn my-take [n coll]
   [:-])
