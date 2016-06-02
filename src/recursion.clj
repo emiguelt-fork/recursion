@@ -132,22 +132,51 @@
   (apply concat (map (fn [entryk] (repeat (get a-map entryk) entryk)) (keys a-map))))
 
 (defn my-take [n coll]
-  [:-])
+  (cond
+   (empty? coll) coll
+   (< n 1) '()
+   :else (cons (first coll) (my-take (- n 1) (rest coll)))))
+
 
 (defn my-drop [n coll]
-  [:-])
+  (cond
+    (empty? coll) coll
+    (< n 1) coll
+    :else (my-drop (- n 1) (rest coll))))
 
 (defn halve [a-seq]
-  [:-])
+  (let [mid (int (/ (count a-seq) 2))]
+    (vector (my-take mid a-seq) (my-drop mid a-seq))))
 
-(defn seq-merge [a-seq b-seq]
-  [:-])
+(defn seq-merge [a-seq b-seq]  
+  (cond
+    (empty? a-seq) b-seq
+    (empty? b-seq) a-seq
+    :else (let [fa (first a-seq)
+                fb (first b-seq)]
+            (if (<= fa fb)
+              (cons fa (seq-merge (rest a-seq) b-seq))
+              (cons fb (seq-merge a-seq (rest b-seq)))))))
 
 (defn merge-sort [a-seq]
-  [:-])
+  (if (>= 1 (count a-seq))
+    a-seq
+    (apply seq-merge (map merge-sort (halve a-seq)))))
+
 
 (defn split-into-monotonics [a-seq]
-  [:-])
+  (defn is-monot [s-seq]
+    (cond
+      (empty? s-seq) false
+      (apply < s-seq) s-seq
+      (apply > s-seq) s-seq
+      :else false))
+
+  (cond
+    (empty? a-seq)  nil
+    (= 1 (count a-seq)) (cons a-seq nil)
+    :else (let [mono (some is-monot (reverse (inits a-seq)))]
+            (cons mono (split-into-monotonics (drop (count mono) a-seq))))))
 
 (defn permutations [a-set]
   [:-])
