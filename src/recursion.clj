@@ -179,7 +179,14 @@
             (cons mono (split-into-monotonics (drop (count mono) a-seq))))))
 
 (defn permutations [a-set]
-  [:-])
+  (cond 
+    (empty? a-set) '(())
+    (= 1 (count a-set)) (cons a-set nil)
+    (= 2 (count a-set)) (rotations a-set)
+    :else (apply concat (map  (fn [s-seq] (map 
+                                   (fn [p-seq] (cons (first s-seq) p-seq))
+                                   (permutations (rest s-seq)))) 
+                             (rotations a-set)))))
 
 (defn powerset [a-set]
   [:-])
